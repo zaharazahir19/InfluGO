@@ -4,15 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>InfluGO — Travel Packages by Influencers</title>
- <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXETJRT9DW"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-GXETJRT9DW');
-</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Poppins:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
@@ -57,25 +48,26 @@
     font-family: 'Poppins', sans-serif;
     font-size: 1.7rem; font-weight: 700;
     color: #FFFFFF; letter-spacing: -0.03em;
-    text-decoration: none;
+    text-decoration: none; flex-shrink: 0;
   }
   .nav-logo span { color: var(--yellow); font-style: italic; }
 
-  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; }
   .nav-links a {
     color: rgba(255,255,255,0.82); text-decoration: none;
     font-size: 0.9rem; font-weight: 600; transition: color 0.2s;
+    white-space: nowrap;
   }
   .nav-links a:hover { color: var(--yellow); }
 
-  .nav-actions { display: flex; align-items: center; gap: 0.75rem; }
+  .nav-actions { display: flex; align-items: center; gap: 0.75rem; flex-shrink: 0; }
 
   .signin-btn {
     background: rgba(255,255,255,0.15);
     color: #fff; border: 1.5px solid rgba(255,255,255,0.4);
     padding: 0.45rem 1.1rem; border-radius: 50px;
     font-family: 'Nunito', sans-serif; font-weight: 700; font-size: 0.85rem;
-    cursor: pointer; transition: all 0.2s;
+    cursor: pointer; transition: all 0.2s; white-space: nowrap;
   }
   .signin-btn:hover { background: rgba(255,255,255,0.28); }
 
@@ -84,7 +76,7 @@
     border: none; padding: 0.45rem 1.2rem; border-radius: 50px;
     font-family: 'Nunito', sans-serif; font-weight: 800; font-size: 0.85rem;
     cursor: pointer; transition: all 0.2s;
-    display: flex; align-items: center; gap: 6px;
+    display: flex; align-items: center; gap: 6px; white-space: nowrap;
   }
   .cart-btn:hover { background: #ffe033; transform: scale(1.03); }
   .cart-count {
@@ -93,6 +85,41 @@
     display: flex; align-items: center; justify-content: center;
     font-size: 0.72rem; font-weight: 800;
   }
+
+  /* HAMBURGER */
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: none; border: none; cursor: pointer; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2.5px;
+    background: #fff; border-radius: 2px; transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* MOBILE MENU */
+  .mobile-menu {
+    display: none; position: fixed; top: 68px; left: 0; right: 0;
+    background: var(--primary-dark); z-index: 99;
+    flex-direction: column; padding: 1rem 5% 1.5rem;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    color: rgba(255,255,255,0.9); text-decoration: none;
+    font-size: 1rem; font-weight: 700; padding: 0.75rem 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+    transition: color 0.2s;
+  }
+  .mobile-menu a:last-child { border-bottom: none; }
+  .mobile-menu a:hover { color: var(--yellow); }
+  .mobile-menu .mobile-actions {
+    display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;
+  }
+  .mobile-menu .signin-btn, .mobile-menu .cart-btn { flex: 1; text-align: center; justify-content: center; }
 
   /* HERO */
   .hero {
@@ -137,6 +164,7 @@
   .hero-stats {
     display: flex; gap: 2.5rem; margin-top: 3.5rem;
     padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.2);
+    flex-wrap: wrap;
   }
   .stat-num { font-family: 'Poppins', sans-serif; font-size: 2rem; color: var(--yellow); font-weight: 700; }
   .stat-label { font-size: 0.78rem; color: rgba(255,255,255,0.7); text-transform: uppercase; letter-spacing: 0.06em; }
@@ -205,7 +233,7 @@
   .card-title { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; color: var(--text); margin-bottom: 0.4rem; line-height: 1.3; }
   .card-desc { font-size: 0.84rem; color: var(--text-mid); line-height: 1.5; margin-bottom: 0.9rem; }
 
-  .card-details { display: flex; gap: 0.9rem; margin-bottom: 0.9rem; padding-bottom: 0.9rem; border-bottom: 1.5px solid var(--border); }
+  .card-details { display: flex; gap: 0.9rem; margin-bottom: 0.9rem; padding-bottom: 0.9rem; border-bottom: 1.5px solid var(--border); flex-wrap: wrap; }
   .detail-item { display: flex; align-items: center; gap: 4px; font-size: 0.79rem; color: var(--text-mid); font-weight: 600; }
 
   .card-footer { display: flex; align-items: center; justify-content: space-between; }
@@ -267,6 +295,54 @@
   .step-title { font-weight: 800; font-size: 1rem; margin-bottom: 0.4rem; }
   .step-desc { font-size: 0.84rem; color: var(--text-mid); line-height: 1.6; }
 
+  /* CONTACT SECTION */
+  .contact-section { padding: 4.5rem 5%; background: var(--bg); }
+  .contact-section .section-title { color: var(--text); }
+  .contact-inner {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; align-items: start;
+  }
+  .contact-info h3 { font-family: 'Poppins', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text); }
+  .contact-info p { font-size: 0.9rem; color: var(--text-mid); margin-bottom: 2rem; line-height: 1.7; }
+
+  .social-links { display: flex; flex-direction: column; gap: 1rem; }
+  .social-link {
+    display: flex; align-items: center; gap: 1rem;
+    background: var(--card); border: 1.5px solid var(--border);
+    padding: 1rem 1.25rem; border-radius: var(--radius);
+    text-decoration: none; transition: all 0.2s;
+  }
+  .social-link:hover { transform: translateX(4px); box-shadow: 0 6px 20px rgba(0,119,200,0.1); }
+  .social-link.facebook { border-color: #1877F2; }
+  .social-link.facebook:hover { background: #EEF4FF; }
+  .social-link.instagram { border-color: #E1306C; }
+  .social-link.instagram:hover { background: #FFF0F5; }
+  .social-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .social-icon.fb { background: #1877F2; }
+  .social-icon.ig { background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); }
+  .social-link-text { flex: 1; }
+  .social-link-name { font-weight: 800; font-size: 0.92rem; color: var(--text); display: block; }
+  .social-link-handle { font-size: 0.78rem; color: var(--text-mid); }
+  .social-link-arrow { color: var(--text-light); font-size: 1rem; }
+
+  .contact-form-card {
+    background: var(--card); border-radius: var(--radius-lg);
+    border: 1.5px solid var(--border); padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,119,200,0.06);
+  }
+  .contact-form-card h3 { font-family: 'Poppins', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; color: var(--text); }
+  .contact-form { display: flex; flex-direction: column; gap: 0.9rem; }
+  .contact-submit {
+    width: 100%; padding: 0.85rem;
+    background: var(--primary); color: #fff; border: none;
+    border-radius: 50px; font-family: 'Nunito', sans-serif;
+    font-weight: 800; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+  }
+  .contact-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
   /* SIGNIN MODAL */
   .modal-overlay {
     position: fixed; inset: 0;
@@ -288,9 +364,7 @@
   .modal-logo span { color: var(--accent); font-style: italic; }
   .modal-sub { font-size: 0.85rem; color: var(--text-mid); margin-bottom: 1.8rem; }
 
-  .profile-tabs {
-    display: flex; gap: 0.75rem; margin-bottom: 1.8rem;
-  }
+  .profile-tabs { display: flex; gap: 0.75rem; margin-bottom: 1.8rem; }
   .profile-tab {
     flex: 1; padding: 0.85rem; border-radius: var(--radius);
     border: 2px solid var(--border); cursor: pointer;
@@ -398,14 +472,39 @@
   footer .footer-logo { font-family: 'Poppins', sans-serif; font-size: 1.6rem; font-weight: 700; color: #fff; margin-bottom: 0.5rem; display: block; }
   footer .footer-logo span { color: var(--yellow); font-style: italic; }
   footer p { color: rgba(255,255,255,0.6); font-size: 0.82rem; }
-  .footer-links { display: flex; justify-content: center; gap: 2rem; margin: 1rem 0; }
+  .footer-links { display: flex; justify-content: center; gap: 2rem; margin: 1rem 0; flex-wrap: wrap; }
   .footer-links a { color: rgba(255,255,255,0.7); text-decoration: none; font-size: 0.84rem; font-weight: 600; transition: color 0.2s; }
   .footer-links a:hover { color: var(--yellow); }
+  .footer-social { display: flex; justify-content: center; gap: 1rem; margin-bottom: 1.2rem; }
+  .footer-social a {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; text-decoration: none; transition: all 0.2s;
+    background: rgba(255,255,255,0.12); border: 1.5px solid rgba(255,255,255,0.2);
+  }
+  .footer-social a:hover { background: var(--yellow); transform: translateY(-2px); }
 
-  @media (max-width: 600px) {
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
     .nav-links { display: none; }
+    .nav-actions { display: none; }
+    .hamburger { display: flex; }
+    .contact-inner { grid-template-columns: 1fr; gap: 2rem; }
     .hero-stats { gap: 1.2rem; }
     .hero h1 { font-size: 2rem; }
+    .packages-grid { grid-template-columns: 1fr; }
+    .influencers-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); }
+    .filters-section { gap: 0.5rem; }
+    .filter-btn { padding: 0.35rem 0.85rem; font-size: 0.8rem; }
+  }
+
+  @media (max-width: 480px) {
+    .influencers-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .hero { padding: 60px 5% 50px; }
+    .hero-stats { gap: 1rem; }
+    .stat-num { font-size: 1.5rem; }
   }
 </style>
 </head>
@@ -418,12 +517,28 @@
     <li><a href="#packages">Packages</a></li>
     <li><a href="#influencers">Influencers</a></li>
     <li><a href="#how">How It Works</a></li>
+    <li><a href="#contact">Contact</a></li>
   </ul>
   <div class="nav-actions">
     <button class="signin-btn" onclick="openSignin()">Sign In</button>
     <button class="cart-btn" onclick="toggleCart()">🛒 Cart <span class="cart-count" id="cartCount">0</span></button>
   </div>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#packages" onclick="closeMenu()">📦 Packages</a>
+  <a href="#influencers" onclick="closeMenu()">🎥 Influencers</a>
+  <a href="#how" onclick="closeMenu()">💡 How It Works</a>
+  <a href="#contact" onclick="closeMenu()">📬 Contact</a>
+  <div class="mobile-actions">
+    <button class="signin-btn" onclick="closeMenu(); openSignin()">Sign In</button>
+    <button class="cart-btn" onclick="closeMenu(); toggleCart()">🛒 Cart <span class="cart-count" id="cartCountMobile">0</span></button>
+  </div>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -488,13 +603,60 @@
   </div>
 </section>
 
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div style="text-align:center; max-width:580px; margin:0 auto 0;">
+    <h2 class="section-title">Get in Touch</h2>
+    <p style="color:var(--text-mid); margin-top:0.4rem;">Follow us on social media or send us a message</p>
+  </div>
+  <div class="contact-inner">
+    <div class="contact-info">
+      <h3>Follow InfluGO</h3>
+      <p>Stay updated with the latest travel packages, influencer stories, and exclusive deals on our social platforms.</p>
+      <div class="social-links">
+        <a href="https://web.facebook.com/profile.php?id=61590101652453" target="_blank" rel="noopener" class="social-link facebook">
+          <div class="social-icon fb">📘</div>
+          <div class="social-link-text">
+            <span class="social-link-name">Facebook</span>
+            <span class="social-link-handle">InfluGO Official Page</span>
+          </div>
+          <span class="social-link-arrow">→</span>
+        </a>
+        <a href="https://www.instagram.com/influgo_sl/" target="_blank" rel="noopener" class="social-link instagram">
+          <div class="social-icon ig">📸</div>
+          <div class="social-link-text">
+            <span class="social-link-name">Instagram</span>
+            <span class="social-link-handle">@influgo_sl</span>
+          </div>
+          <span class="social-link-arrow">→</span>
+        </a>
+      </div>
+    </div>
+    <div class="contact-form-card">
+      <h3>💬 Send Us a Message</h3>
+      <div class="contact-form">
+        <input class="form-input" type="text" placeholder="Your Name" />
+        <input class="form-input" type="email" placeholder="Email Address" />
+        <input class="form-input" type="text" placeholder="Subject" />
+        <textarea class="form-input" rows="4" placeholder="Your message..." style="resize:vertical;"></textarea>
+        <button class="contact-submit" onclick="sendContact()">Send Message ✈</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer>
   <span class="footer-logo">Influ<span>GO</span></span>
+  <div class="footer-social">
+    <a href="https://web.facebook.com/profile.php?id=61590101652453" target="_blank" rel="noopener" title="Facebook">📘</a>
+    <a href="https://www.instagram.com/influgo_sl/" target="_blank" rel="noopener" title="Instagram">📸</a>
+  </div>
   <div class="footer-links">
     <a href="#packages">Packages</a>
     <a href="#influencers">Influencers</a>
     <a href="#how">How It Works</a>
+    <a href="#contact">Contact</a>
     <a href="#" onclick="openSignin()">Sign In</a>
   </div>
   <p>© 2026 InfluGO. All rights reserved.</p>
@@ -581,8 +743,20 @@ const influencers = [
 let cart = [];
 let currentFilter = 'all';
 let activeTab = 'user';
+let menuOpen = false;
 
 function fmt(n) { return 'LKR ' + n.toLocaleString(); }
+
+function toggleMenu() {
+  menuOpen = !menuOpen;
+  document.getElementById('mobileMenu').classList.toggle('open', menuOpen);
+  document.getElementById('hamburger').classList.toggle('open', menuOpen);
+}
+function closeMenu() {
+  menuOpen = false;
+  document.getElementById('mobileMenu').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}
 
 function renderPackages(filter) {
   const grid = document.getElementById('packagesGrid');
@@ -656,7 +830,9 @@ function removeFromCart(id) {
 }
 
 function updateCartUI() {
-  document.getElementById('cartCount').textContent = cart.length;
+  const count = cart.length;
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('cartCountMobile').textContent = count;
   const container = document.getElementById('cartItems');
   const footer = document.getElementById('cartFooter');
   if (cart.length === 0) {
@@ -719,6 +895,19 @@ function handleSignin() {
   showToast('Welcome to InfluGO! 🎉');
   closeSignin();
 }
+
+function sendContact() {
+  showToast('✅ Message sent! We\'ll get back to you soon.');
+}
+
+// Close mobile menu when clicking outside
+document.addEventListener('click', function(e) {
+  const menu = document.getElementById('mobileMenu');
+  const hamburger = document.getElementById('hamburger');
+  if (menuOpen && !menu.contains(e.target) && !hamburger.contains(e.target)) {
+    closeMenu();
+  }
+});
 
 renderPackages('all');
 renderInfluencers();
