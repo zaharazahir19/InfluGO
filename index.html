@@ -635,10 +635,10 @@
     <div class="contact-form-card">
       <h3>💬 Send Us a Message</h3>
       <div class="contact-form">
-        <input class="form-input" type="text" placeholder="Your Name" />
-        <input class="form-input" type="email" placeholder="Email Address" />
-        <input class="form-input" type="text" placeholder="Subject" />
-        <textarea class="form-input" rows="4" placeholder="Your message..." style="resize:vertical;"></textarea>
+        <input class="form-input" id="contactName" type="text" placeholder="Your Name" />
+        <input class="form-input" id="contactEmail" type="email" placeholder="Email Address" />
+        <input class="form-input" id="contactSubject" type="text" placeholder="Subject" />
+        <textarea class="form-input" id="contactMessage" rows="4" placeholder="Your message..." style="resize:vertical;"></textarea>
         <button class="contact-submit" onclick="sendContact()">Send Message ✈</button>
       </div>
     </div>
@@ -897,7 +897,35 @@ function handleSignin() {
 }
 
 function sendContact() {
-  showToast('✅ Message sent! We\'ll get back to you soon.');
+  const name = document.getElementById("contactName").value.trim();
+  const email = document.getElementById("contactEmail").value.trim();
+  const subject = document.getElementById("contactSubject").value.trim();
+  const message = document.getElementById("contactMessage").value.trim();
+
+  if (!name || !email || !message) { showToast("⚠️ Please fill in Name, Email and Message."); return; }
+
+  const btn = document.querySelector(".contact-submit");
+  btn.textContent = "Sending...";
+  btn.disabled = true;
+
+  fetch("https://script.google.com/macros/s/AKfycbxYAyL0ehRIeFQmdk27FYHyeKXSQw31wbvjH0qswj3rt5crxNsK8HaY-0-mAUeC-KO7Rw/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, email, subject, message })
+  }).then(() => {
+    showToast("✅ Message sent! We will get back to you soon.");
+    document.getElementById("contactName").value = "";
+    document.getElementById("contactEmail").value = "";
+    document.getElementById("contactSubject").value = "";
+    document.getElementById("contactMessage").value = "";
+    btn.textContent = "Send Message ✈";
+    btn.disabled = false;
+  }).catch(() => {
+    showToast("❌ Failed to send. Please try again.");
+    btn.textContent = "Send Message ✈";
+    btn.disabled = false;
+  });
 }
 
 // Close mobile menu when clicking outside
