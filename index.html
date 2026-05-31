@@ -943,6 +943,10 @@ function sendContact() {
     body: JSON.stringify({ name, email, subject, message, leadSource }) // ✅ leadSource included
   }).then(() => {
     fbq('track', 'Lead'); // ✅ Meta Pixel: Lead — fires when form is successfully submitted
+    gtag('event', 'generate_lead', { // ✅ GA4: generate_lead — fires when form is successfully submitted
+      event_category: 'Contact Form',
+      event_label: 'InfluGO Contact Form'
+    });
     showToast("✅ Message sent! We will get back to you soon.");
     document.getElementById("contactName").value = "";
     document.getElementById("contactEmail").value = "";
