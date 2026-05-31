@@ -506,7 +506,17 @@
     .hero-stats { gap: 1rem; }
     .stat-num { font-size: 1.5rem; }
   }
+
 </style>
+
+<!-- ✅ GA4 Tag -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-GXETJRT9DW"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-GXETJRT9DW');
+</script>
 
 <!-- ✅ Meta Pixel Base Code -->
 <script>
@@ -525,7 +535,7 @@ fbq('track', 'PageView');
   <img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=3110328392505794&ev=PageView&noscript=1"/>
 </noscript>
-<!-- ✅ End Meta Pixel Base Code -->
+<!-- ✅ End Pixel Code -->
 
 </head>
 <body>
@@ -590,7 +600,7 @@ fbq('track', 'PageView');
 <!-- PACKAGES -->
 <section class="packages-section" id="packages">
   <!-- ✅ Meta Pixel: ViewContent — fires when visitor reaches Packages section -->
-  <script>fbq('track', 'ViewContent');</script>
+  
   <div class="section-header">
     <div>
       <h2 class="section-title">Featured Packages</h2>
@@ -628,7 +638,7 @@ fbq('track', 'PageView');
 <!-- CONTACT -->
 <section class="contact-section" id="contact">
   <!-- ✅ Meta Pixel: Contact — fires when visitor reaches Contact section -->
-  <script>fbq('track', 'Contact');</script>
+  
   <div style="text-align:center; max-width:580px; margin:0 auto 0;">
     <h2 class="section-title">Get in Touch</h2>
     <p style="color:var(--text-mid); margin-top:0.4rem;">Follow us on social media or send us a message</p>
@@ -943,9 +953,9 @@ function sendContact() {
     body: JSON.stringify({ name, email, subject, message, leadSource }) // ✅ leadSource included
   }).then(() => {
     fbq('track', 'Lead'); // ✅ Meta Pixel: Lead — fires when form is successfully submitted
-    gtag('event', 'generate_lead', { // ✅ GA4: generate_lead — fires when form is successfully submitted
-      event_category: 'Contact Form',
-      event_label: 'InfluGO Contact Form'
+   gtag('event', 'generate_lead', {
+  form_name: 'InfluGO Contact Form',
+  method: 'contact_form'
     });
     showToast("✅ Message sent! We will get back to you soon.");
     document.getElementById("contactName").value = "";
@@ -986,6 +996,29 @@ document.addEventListener('click', function(e) {
 
 renderPackages('all');
 renderInfluencers();
+
+ // Fire Meta Pixel events only when sections scroll into view
+const sectionPixelEvents = [
+  { id: 'packages', fired: false, event: () => fbq('track', 'ViewContent') },
+  { id: 'contact',  fired: false, event: () => fbq('track', 'Contact') },
+];
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const section = sectionPixelEvents.find(s => s.id === entry.target.id);
+      if (section && !section.fired) {
+        section.event();
+        section.fired = true; // only fires once per session
+      }
+    }
+  });
+}, { threshold: 0.2 }); // fires when 20% of the section is visible
+
+sectionPixelEvents.forEach(s => {
+  const el = document.getElementById(s.id);
+  if (el) observer.observe(el);
+});
 </script>
 </body>
 </html>
